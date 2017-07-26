@@ -5,7 +5,10 @@
 	<section>
 
 	<?php if (have_posts()): while (have_posts()) : the_post(); ?>
-
+               <?php 
+            /*To get the page view count. To get popular post*/
+                    wpb_get_post_views(get_the_ID()); 
+               ?>
 		<!-- article -->
 		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
