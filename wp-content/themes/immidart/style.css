@@ -737,7 +737,6 @@ body {
 #blog {
 	padding: 4% 0px 0px 0px;
 	height: 300px;
-	background-image: url(../images/blog/banner.jpg);
 	position: relative;
 	background-size: cover;
 	background-position: center;
@@ -805,7 +804,7 @@ body {
 	font-size: 14px;
     color: #707070;
 }
- .blog-item ul li a{
+ .blog-item ul li span{
     text-decoration: none;
     font-size: 14px;
     color: #495d65;
