@@ -26,7 +26,7 @@ define('DB_NAME', 'Immidart');
 define('DB_USER', 'root');
 
 /** MySQL database password */
-define('DB_PASSWORD', 'Admin@2017');
+define('DB_PASSWORD', 'Admin@2017'
 
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
