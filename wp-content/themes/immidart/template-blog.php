@@ -5,7 +5,8 @@
    $current_cat_id  = $id_obj->term_id;
    $meta_image = z_taxonomy_image_url($id_obj->term_id);
 ?>
-<div class="inside-page-banner" id="blog" style="background: url(<?php echo $meta_image; ?>);">
+<div class="inside-page-banner" id="blog" style="background: url(<?php echo $meta_image; ?>); background-size: cover;
+    background-position: center;">
       <div class="container">
         <div class="col-md-6 text-center col-md-offset-3">
           <h1><?php echo $id_obj->description; ?></h1>
