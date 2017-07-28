@@ -26,7 +26,7 @@
       </div>
       <div class="col-md-12">
         <div class="copyright">
-          <p>Copyright  2017 Immidart Technologies LLP</p>
+          <p>Copyright  2017 Immidart Technologies LLP changed</p>
         </div>
       </div>
     </div>
