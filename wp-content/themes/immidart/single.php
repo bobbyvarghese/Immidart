@@ -1,67 +1,68 @@
-<?php get_header(); ?>
+<?php 
+       get_header(); 
+       $category_slug = 'blog';
+       $id_obj = get_category_by_slug($category_slug);
+       $current_cat_id  = $id_obj->term_id;
+       $meta_image = z_taxonomy_image_url($id_obj->term_id);
+?>
+<?php if(!empty($meta_image)): ?>
+<div class="inside-page-banner" id="blog" style="background: url(<?php echo $meta_image; ?>);">
+      <div class="container">
+        <div class="col-md-6 text-center col-md-offset-3">
+          <h1><?php echo $id_obj->description; ?></h1>
+        </div>
+      </div>
+      <div class="breadcrumb-bg">
+        <div class="container">
+          <div class="breadcrumb"> <a class="" href="<?php echo get_site_url(); ?>">Home</a> <i class="fa fa-angle-double-right duble-arrow" aria-hidden="true"></i> <a class="active" href="<?php echo get_site_url() .'/blog'; ?>"> <?php echo $id_obj->name; ?></a> </div>
+        </div>
+      </div>
+</div>
+<?php endif ?>
 
-	<main role="main">
-	<!-- section -->
-	<section>
-
-	<?php if (have_posts()): while (have_posts()) : the_post(); ?>
-
-		<!-- article -->
-		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
-			<!-- post thumbnail -->
-			<?php if ( has_post_thumbnail()) : // Check if Thumbnail exists ?>
-				<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>">
-					<?php the_post_thumbnail(); // Fullsize image for the single post ?>
-				</a>
-			<?php endif; ?>
-			<!-- /post thumbnail -->
-
-			<!-- post title -->
-			<h1>
-				<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a>
-			</h1>
-			<!-- /post title -->
-
-			<!-- post details -->
-			<span class="date"><?php the_time('F j, Y'); ?> <?php the_time('g:i a'); ?></span>
-			<span class="author"><?php _e( 'Published by', 'html5blank' ); ?> <?php the_author_posts_link(); ?></span>
-			<span class="comments"><?php if (comments_open( get_the_ID() ) ) comments_popup_link( __( 'Leave your thoughts', 'html5blank' ), __( '1 Comment', 'html5blank' ), __( '% Comments', 'html5blank' )); ?></span>
-			<!-- /post details -->
-
-			<?php the_content(); // Dynamic Content ?>
-
-			<?php the_tags( __( 'Tags: ', 'html5blank' ), ', ', '<br>'); // Separated by commas with a line break at the end ?>
-
-			<p><?php _e( 'Categorised in: ', 'html5blank' ); the_category(', '); // Separated by commas ?></p>
-
-			<p><?php _e( 'This post was written by ', 'html5blank' ); the_author(); ?></p>
-
-			<?php edit_post_link(); // Always handy to have Edit Post Links available ?>
-
-			<?php comments_template(); ?>
-
-		</article>
-		<!-- /article -->
-
-	<?php endwhile; ?>
-
-	<?php else: ?>
-
-		<!-- article -->
-		<article>
-
-			<h1><?php _e( 'Sorry, nothing to display.', 'html5blank' ); ?></h1>
-
-		</article>
-		<!-- /article -->
-
-	<?php endif; ?>
-
-	</section>
-	<!-- /section -->
-	</main>
-
-<?php get_sidebar(); ?>
-
+<div id="page-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 col-sm-12 col-xs-12">
+          <div class="blog-items">
+            <div class="blog-item blog-item-wide">
+              <div class="blog-image blog-details-img" data-aos="fade-up" data-aos-duration="1000"> 
+                   <?php if (have_posts()): while (have_posts()) : the_post(); 
+                         /*To get the page view count. To get popular post*/
+                               wpb_get_post_views(get_the_ID()); 
+                   ?>
+                  <?php if ( has_post_thumbnail()) : // Check if Thumbnail exists ?>	
+                      <a href="<?php echo the_permalink(); ?>">
+                      <img src="<?php echo the_post_thumbnail_url(); ?>" alt="blog image" class="img-responsive"></a> 
+              </div>
+                  <?php endif; ?>
+              <div class="blog-content blog-content-details" data-aos="fade-up" data-aos-duration="1000">
+                    <h4><a href="<?php echo the_permalink(); ?>"><?php the_title(); ?></a></h4>
+                    <ul>
+                      <li><i class="fa fa-user" aria-hidden="true"></i> <a href="#"><?php echo get_the_author(); ?></a></li>
+                      <li><i class="fa fa-calendar" aria-hidden="true"></i> <a href="#"><?php the_time('F j, Y'); ?></a></li>
+                    </ul>
+                    <?php the_content(); ?>
+              </div>
+			<?php comments_template(); 
+                        ?>	
+	        <?php endwhile; 
+                      else: ?>
+                        <article>
+                            <h1><?php _e( 'Sorry, nothing to display.', 'html5blank' ); ?></h1>
+                        </article>
+	      <?php endif; ?>
+            </div>
+         </div>
+        </div>
+        <?php get_sidebar(); ?>
+    </div>
+  </div>
+</div>
 <?php get_footer(); ?>
+
+<script>
+   function socialclick(url){
+    window.open(url,'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=450');return false;
+   }
+</script>

@@ -31,8 +31,8 @@ if (function_exists('add_theme_support'))
     // Add Thumbnail Theme Support
     add_theme_support('post-thumbnails');
     add_image_size('large', 700, '', true); // Large Thumbnail
-    add_image_size('medium', 250, '', true); // Medium Thumbnail
-    add_image_size('small', 120, '', true); // Small Thumbnail
+    add_image_size('medium', 270, 219, true); // Medium Thumbnail
+    add_image_size('small', 90, 80, true); // Small Thumbnail
     add_image_size('custom-size', 700, 200, true); // Custom Thumbnail Size call using the_post_thumbnail('custom-size');
 
     // Add Support for Custom Backgrounds - Uncomment below if you're going to use
@@ -307,9 +307,16 @@ function enable_threaded_comments()
     }
 }
 
+remove_filter ('the_content', 'wpautop'); 
+remove_filter ('comment_text', 'wpautop'); 
+remove_filter('the_content', 'wptexturize');
+remove_filter('the_excerpt', 'wptexturize');
+remove_filter('comment_text', 'wptexturize');
+
 // Custom Comments Callback
 function html5blankcomments($comment, $args, $depth)
 {
+    
 	$GLOBALS['comment'] = $comment;
 	extract($args, EXTR_SKIP);
 
@@ -320,35 +327,37 @@ function html5blankcomments($comment, $args, $depth)
 		$tag = 'li';
 		$add_below = 'div-comment';
 	}
+
 ?>
     <!-- heads up: starting < for the html tag (li or div) in the next line: -->
     <<?php echo $tag ?> <?php comment_class(empty( $args['has_children'] ) ? '' : 'parent') ?> id="comment-<?php comment_ID() ?>">
-	<?php if ( 'div' != $args['style'] ) : ?>
-	<div id="div-comment-<?php comment_ID() ?>" class="comment-body">
-	<?php endif; ?>
-	<div class="comment-author vcard">
-	<?php if ($args['avatar_size'] != 0) echo get_avatar( $comment, $args['180'] ); ?>
-	<?php printf(__('<cite class="fn">%s</cite> <span class="says">says:</span>'), get_comment_author_link()) ?>
-	</div>
-<?php if ($comment->comment_approved == '0') : ?>
-	<em class="comment-awaiting-moderation"><?php _e('Your comment is awaiting moderation.') ?></em>
-	<br />
-<?php endif; ?>
 
-	<div class="comment-meta commentmetadata"><a href="<?php echo htmlspecialchars( get_comment_link( $comment->comment_ID ) ) ?>">
-		<?php
-			printf( __('%1$s at %2$s'), get_comment_date(),  get_comment_time()) ?></a><?php edit_comment_link(__('(Edit)'),'  ','' );
-		?>
-	</div>
+           <?php if ( 'div' != $args['style'] ) : ?>
+	  <div id="div-comment-<?php comment_ID() ?>" class="comment-body">
+       <?php endif; ?>
+            
+            <div class="comment-box clearfix" data-aos="fade-up" data-aos-duration="1000">
+                <div class="avatar">
+                    <?php if ($args['avatar_size'] != 0) echo get_avatar( $comment, $args['180'] ); ?>
+                </div>
+                
+                <div class="comment-content">
+                        <div class="comment-meta"> 
+                            <span class="comment-by"><?php echo get_comment_author_link() ?></span> 
+                            <span class="comment-date"><?php echo get_comment_date(). 'at'. get_comment_time(); ?></span> 
+                            <span class="reply-link"><?php comment_reply_link(array_merge( $args, array('add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth']))) ?></span> 
+                        </div>
+                        <p><?php comment_text() ?></p>
 
-	<?php comment_text() ?>
-
-	<div class="reply">
-	<?php comment_reply_link(array_merge( $args, array('add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth']))) ?>
-	</div>
-	<?php if ( 'div' != $args['style'] ) : ?>
-	</div>
-	<?php endif; ?>
+            <?php if ($comment->comment_approved == '0') : ?>
+                    <em class="comment-awaiting-moderation"><?php _e('Your comment is awaiting moderation.') ?></em>
+                    <br />
+            <?php endif; ?>
+                </div>   
+            </div> 
+                <?php if ( 'div' != $args['style'] ) : ?>
+	   </div>
+	         <?php endif; ?>
 <?php }
 
 /*------------------------------------*\
@@ -517,4 +526,215 @@ register_sidebar(array(
     ));
 }
 
+function custom_excerpt_length( $length ) {
+	return 30;
+}
+add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
+
+function new_excerpt_more($more) {
+   global $post;
+   return ' ';
+}
+add_filter('excerpt_more', 'new_excerpt_more');
+
+function wpb_set_post_views($postID) {
+    $count_key = 'wpb_post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        $count = 0;
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+    }else{
+        $count++;
+        update_post_meta($postID, $count_key, $count);
+    }
+}
+//To keep the count accurate, lets get rid of prefetching
+remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
+
+function wpb_track_post_views ($post_id) {
+    if ( !is_single() ) return;
+    if ( empty ( $post_id) ) {
+        global $post;
+        $post_id = $post->ID;    
+    }
+    wpb_set_post_views($post_id);
+}
+add_action( 'wp_head', 'wpb_track_post_views');
+
+function wpb_get_post_views($postID){
+    $count_key = 'wpb_post_views_count';
+    $count = get_post_meta($postID, $count_key, true);
+    if($count==''){
+        delete_post_meta($postID, $count_key);
+        add_post_meta($postID, $count_key, '0');
+        return "0 View";
+    }
+    return $count.' Views';
+}
+add_filter('view_count', 'wpb_get_post_views');
+
+function crunchify_social_sharing_buttons($content) {
+    global $post;
+    if(is_singular()){
+
+        // Get current page URL 
+        $crunchifyURL = urlencode(get_permalink());
+ 
+        // Get current page title
+        $crunchifyTitle = str_replace( ' ', '%20', get_the_title());
+        
+        // Get Post Thumbnail for pinterest
+        $crunchifyThumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
+ 
+        // Construct sharing URL without using any script
+        $twitterURL = 'https://twitter.com/intent/tweet?text='.$crunchifyTitle.'&amp;url='.$crunchifyURL.'&amp;via=Crunchify';
+        $facebookURL = 'https://www.facebook.com/sharer/sharer.php?u='.$crunchifyURL;
+        $googleURL = 'https://plus.google.com/share?url='.$crunchifyURL;
+        $bufferURL = 'https://bufferapp.com/add?url='.$crunchifyURL.'&amp;text='.$crunchifyTitle;
+        $whatsappURL = 'whatsapp://send?text='.$crunchifyTitle . ' ' . $crunchifyURL;
+        $linkedInURL = 'https://www.linkedin.com/shareArticle?mini=true&url='.$crunchifyURL.'&amp;title='.$crunchifyTitle;
+ 
+        // Based on popular demand added Pinterest too
+        $pinterestURL = 'https://pinterest.com/pin/create/button/?url='.$crunchifyURL.'&amp;media='.$crunchifyThumbnail[0].'&amp;description='.$crunchifyTitle;
+     
+        // Add sharing button at the end of page/page content
+        $content .= '<!-- Crunchify.com social sharing. Get your copy here: http://crunchify.me/1VIxAsz -->';
+        $content .= '<div class="post-bottom clearfix" data-aos="fade-up" data-aos-duration="1000">';
+        $content .= '<div class="post-share">';
+        $content .= '<span>Share This Post:</span>';
+      //  $content .= '<ul class="social-icons icon-circle icon-zoom list-unstyled list-inline">';
+        $content .= '<a class="facebook" rel="nofollow" href="'.$facebookURL.'" title="Share to Facebook" onclick="return socialclick(this.href);"><i class="fa fa-facebook"></i></a> </li>';
+        $content .= '<a class="linkedin" rel="nofollow" href="'.$linkedInURL.'" title="Share to LinkedIn" onclick="return socialclick(this.href);"><i class="fa fa-linkedin"></i></a> </li>';
+        $content .= '<a class="twitter" rel="nofollow" href="'.$twitterURL.'"  title="Share to Twitter" onclick="return socialclick(this.href);"><i class="fa fa-twitter"></i></a> </li>';
+        $content .= '<a class="gplus" rel="nofollow" href="'.$googleURL.'" title="Share to Google Plus" onclick="return socialclick(this.href);"><i class="fa fa-google-plus"></i></a> </li>';
+        $content .= '<a class="mail" rel="nofollow" href="'.$pinterestURL.'" title="Share to Pinterest" onclick="return socialclick(this.href);"><i class="fa fa-pinterest"></i></a> </li>';
+        //$content .= '</ul>';
+        $content .= '</div>';
+        $content .= '</div>';
+      //  $content .= '</div>';
+        
+        return $content;
+    }else{
+        // if not a post/page then don't include sharing button
+        return $content;
+    }
+};
+add_filter( 'the_content', 'crunchify_social_sharing_buttons');
+?>
+<?php
+/* Specific modifications to update comment form and comment display */
+//add_filter('comment_reply_link', 'bs_comment_reply_link',10,3);
+/**
+ * Filter to add Twitter Bootstrap button class to comment reply link
+ *
+ * @return text HTML content 
+ **/
+function bs_comment_reply_link($val) {
+	$val = str_replace('comment-reply-link','btn btn-success comment-reply-link',$val);
+	return $val;
+}
+/**
+ * Note: This is a duplicate of the comment_from in /wp-includes/comment-template.
+ *
+ * Outputs a complete commenting form for use within a template.
+ * Most strings and form fields may be controlled through the $args array passed
+ * into the function, while you may also choose to use the comment_form_default_fields
+ * filter to modify the array of default fields if you'd just like to add a new
+ * one or remove a single field. All fields are also individually passed through
+ * a filter of the form comment_form_field_$name where $name is the key used
+ * in the array of fields.
+ *
+ * @since 3.0.0
+ * @param array $args Options for strings, fields etc in the form
+ * @param mixed $post_id Post ID to generate the form for, uses the current post if null
+ * @return void
+ */
+function bs_comment_form( $args = array(), $post_id = null ) {
+	global $id;
+	if ( null === $post_id )
+		$post_id = $id;
+	else
+		$id = $post_id;
+	$commenter = wp_get_current_commenter();
+	$user = wp_get_current_user();
+	$user_identity = $user->exists() ? $user->display_name : '';
+	$req = get_option( 'require_name_email' );
+	$aria_req = ( $req ? " aria-required='true'" : '' );
+	$fields =  array(
+		'author' => '<p class="comment-form-author">' . '<label for="author">' . __( 'Name' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) .
+		            '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30"' . $aria_req . ' /></p>',
+		'email'  => '<p class="comment-form-email"><label for="email">' . __( 'Email' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) .
+		            '<input id="email" name="email" type="text" value="' . esc_attr(  $commenter['comment_author_email'] ) . '" size="30"' . $aria_req . ' /></p>',
+		'url'    => '<p class="comment-form-url"><label for="url">' . __( 'Website' ) . '</label>' . ( $req ? '<span class="required">*</span>' : '' ) .
+		            '<input id="url" name="url" type="text" value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" /></p>',
+	);
+	$required_text = sprintf( ' ' . __('Required fields are marked %s'), '<span class="required">*</span>' );
+	$defaults = array(
+		'fields'               => apply_filters( 'comment_form_default_fields', $fields ),
+		'comment_field'        => '<p class="comment-form-comment"><label for="comment">' . _x( 'Comment', 'noun' ) . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>',
+		'must_log_in'          => '<p class="must-log-in">' . sprintf( __( 'You must be <a href="%s">logged in</a> to post a comment.' ), wp_login_url( apply_filters( 'the_permalink', get_permalink( $post_id ) ) ) ) . '</p>',
+		'logged_in_as'         => '<p class="logged-in-as">' . sprintf( __( 'Logged in as <a href="%1$s">%2$s</a>. <a href="%3$s" title="Log out of this account">Log out?</a>' ), admin_url( 'profile.php' ), $user_identity, wp_logout_url( apply_filters( 'the_permalink', get_permalink( $post_id ) ) ) ) . '</p>',
+		'id_form'              => 'commentform',
+		'id_submit'            => 'submit',
+		'title_reply'          => __( 'Leave a Reply' ),
+		'title_reply_to'       => __( 'Leave a Reply to %s' ),
+		'cancel_reply_link'    => __( 'Cancel reply' ),
+		'label_submit'         => __( 'SUBMIT COMMENT' ),
+	);
+	$args = wp_parse_args( $args, apply_filters( 'comment_form_defaults', $defaults ) );
+	?>
+		<?php if ( comments_open( $post_id ) ) : ?>
+			<?php do_action( 'comment_form_before' ); 
+                              $count =0;   
+                        ?>
+			<div id="respond">
+				<h3 id="reply-title"><?php comment_form_title( $args['title_reply'], $args['title_reply_to'] ); ?> <small><?php cancel_comment_reply_link( $args['cancel_reply_link'] ); ?></small></h3>
+				<?php if ( get_option( 'comment_registration' ) && !is_user_logged_in() ) : ?>
+					<?php echo $args['must_log_in']; ?>
+					<?php do_action( 'comment_form_must_log_in_after' ); ?>
+				<?php else : ?>
+					<form action="<?php echo site_url( '/wp-comments-post.php' ); ?>" method="post" id="<?php echo esc_attr( $args['id_form'] ); ?>">
+						<?php do_action( 'comment_form_top' ); ?>
+						<?php if ( is_user_logged_in() ) : ?>
+							<?php echo apply_filters( 'comment_form_logged_in', $args['logged_in_as'], $commenter, $user_identity ); ?>
+							<?php do_action( 'comment_form_logged_in_after', $commenter, $user_identity ); ?>
+						<?php else : ?>
+							<?php echo $args['comment_notes_before']; ?>
+							<?php
+							do_action( 'comment_form_before_fields' );
+							foreach ( (array) $args['fields'] as $name => $field ) {
+                                                            
+                                                             if($count <3 ) {
+                                                              
+                                                                $count++;
+                                                            ?>
+                                                      <div class="col-md-4">
+                                                            
+                                                             <?php } echo apply_filters( "comment_form_field_{$name}", $field ) . "\n";
+							
+                                                             if($count <4 ) {  ?>
+                                                      </div>    
+                                                             <?php }  }
+							do_action( 'comment_form_after_fields' );
+							?>
+						<?php endif; ?>
+                                            <div class="col-md-12">
+						<?php echo apply_filters( 'comment_form_field_comment', $args['comment_field'] ); ?>
+						<?php echo $args['comment_notes_after']; ?>
+						<p class="form-submit">
+							<input name="submit" class="btn btn-success" type="submit" id="<?php echo esc_attr( $args['id_submit'] ); ?>" value="<?php echo esc_attr( $args['label_submit'] ); ?>" />
+							<?php comment_id_fields( $post_id ); ?>
+						</p>
+						<?php do_action( 'comment_form', $post_id ); ?>
+                                            </div>
+					</form>
+				<?php endif; ?>
+			</div><!-- #respond -->
+			<?php do_action( 'comment_form_after' ); ?>
+		<?php else : ?>
+			<?php do_action( 'comment_form_comments_closed' ); ?>
+		<?php endif; ?>
+	<?php
+}
 ?>

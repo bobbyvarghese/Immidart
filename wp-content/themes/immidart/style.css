@@ -737,7 +737,6 @@ body {
 #blog {
 	padding: 4% 0px 0px 0px;
 	height: 300px;
-	background-image: url(../images/blog/banner.jpg);
 	position: relative;
 	background-size: cover;
 	background-position: center;
@@ -805,7 +804,7 @@ body {
 	font-size: 14px;
     color: #707070;
 }
- .blog-item ul li a{
+ .blog-item ul li span{
     text-decoration: none;
     font-size: 14px;
     color: #495d65;
@@ -1802,4 +1801,42 @@ a.main-button:hover, input[type="submit"]:hover {
     	font-size: 36px;
     	padding-top: 72px;
 	}
+}
+
+/*Comments */
+#wpcomm .wc-comment-title {
+    border-bottom:none;
+}
+
+#wpcomm .wc-comment-link .wpf-cta {
+    display: none !important;
+}
+
+#wpcomm .wc-comment-bar {
+    display: none !important;
+}
+
+#wc-comment-header {
+    font-size: 20px;
+    color: #323f43;
+    margin: 0px 0px 15px 0px;
+    font-family: 'OpenSansBold';
+    text-transform: uppercase;
+}
+
+.blog-item ul li.comment{
+    display: inherit;
+}
+
+h3.comment-reply-title {
+    font-size: 20px;
+    color: #323f43;
+    margin: 0px 0px 15px 0px;
+    font-family: 'OpenSansBold';
+    text-transform: uppercase;
+}
+
+#respond .required {
+    color: #ED2C3A;
+    margin-left: 2px;
 }
