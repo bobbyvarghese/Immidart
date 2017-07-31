@@ -1840,3 +1840,28 @@ h3.comment-reply-title {
     color: #ED2C3A;
     margin-left: 2px;
 }
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus{
+    color: #85c342;
+    background-color: transparent !important;
+}
+
+.blog-item small a {
+	    color: #85c342 !important;
+}
+
+#reply-title a{
+    text-decoration: none;
+    color: black;
+    font-family: 'OpenSansBold';
+    color: #495d65;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 23px;
+    cursor: default;
+}
+
+#reply-title small a{
+    cursor: pointer;
+    text-transform: initial;
+}

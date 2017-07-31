@@ -343,7 +343,7 @@ function html5blankcomments($comment, $args, $depth)
                 
                 <div class="comment-content">
                         <div class="comment-meta"> 
-                            <span class="comment-by"><?php echo get_comment_author_link() ?></span> 
+                            <span class="comment-by"><?php echo get_comment_author() ?></span> 
                             <span class="comment-date"><?php echo get_comment_date(). 'at'. get_comment_time(); ?></span> 
                             <span class="reply-link"><?php comment_reply_link(array_merge( $args, array('add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth']))) ?></span> 
                         </div>
@@ -677,9 +677,9 @@ function bs_comment_form( $args = array(), $post_id = null ) {
 		'logged_in_as'         => '<p class="logged-in-as">' . sprintf( __( 'Logged in as <a href="%1$s">%2$s</a>. <a href="%3$s" title="Log out of this account">Log out?</a>' ), admin_url( 'profile.php' ), $user_identity, wp_logout_url( apply_filters( 'the_permalink', get_permalink( $post_id ) ) ) ) . '</p>',
 		'id_form'              => 'commentform',
 		'id_submit'            => 'submit',
-		'title_reply'          => __( 'Leave a Reply' ),
+		'title_reply'          => __( '<h2 class="respond-title" data-aos="fade-up" data-aos-duration="1000">Leave a Reply </h2>' ),
 		'title_reply_to'       => __( 'Leave a Reply to %s' ),
-		'cancel_reply_link'    => __( 'Cancel reply' ),
+		'cancel_reply_link'    => __( 'Cancel   Reply' ),
 		'label_submit'         => __( 'SUBMIT COMMENT' ),
 	);
 	$args = wp_parse_args( $args, apply_filters( 'comment_form_defaults', $defaults ) );
@@ -689,13 +689,14 @@ function bs_comment_form( $args = array(), $post_id = null ) {
                               $count =0;   
                         ?>
 			<div id="respond">
-				<h3 id="reply-title"><?php comment_form_title( $args['title_reply'], $args['title_reply_to'] ); ?> <small><?php cancel_comment_reply_link( $args['cancel_reply_link'] ); ?></small></h3>
+				<h3 id="reply-title" class="respond-title" data-aos="fade-up" data-aos-duration="1000"><?php comment_form_title( $args['title_reply'], $args['title_reply_to'] ); ?> <small><?php cancel_comment_reply_link( $args['cancel_reply_link'] ); ?></small></h3>
 				<?php if ( get_option( 'comment_registration' ) && !is_user_logged_in() ) : ?>
 					<?php echo $args['must_log_in']; ?>
 					<?php do_action( 'comment_form_must_log_in_after' ); ?>
 				<?php else : ?>
 					<form action="<?php echo site_url( '/wp-comments-post.php' ); ?>" method="post" id="<?php echo esc_attr( $args['id_form'] ); ?>">
-						<?php do_action( 'comment_form_top' ); ?>
+			                    <div data-aos="fade-up" data-aos-duration="1000">
+                                             <?php do_action( 'comment_form_top' ); ?>
 						<?php if ( is_user_logged_in() ) : ?>
 							<?php echo apply_filters( 'comment_form_logged_in', $args['logged_in_as'], $commenter, $user_identity ); ?>
 							<?php do_action( 'comment_form_logged_in_after', $commenter, $user_identity ); ?>
@@ -719,7 +720,8 @@ function bs_comment_form( $args = array(), $post_id = null ) {
 							do_action( 'comment_form_after_fields' );
 							?>
 						<?php endif; ?>
-                                            <div class="col-md-12">
+                                            </div> 
+                                            <div class="col-md-12" data-aos="fade-up" data-aos-duration="1000">
 						<?php echo apply_filters( 'comment_form_field_comment', $args['comment_field'] ); ?>
 						<?php echo $args['comment_notes_after']; ?>
 						<p class="form-submit">
@@ -727,7 +729,7 @@ function bs_comment_form( $args = array(), $post_id = null ) {
 							<?php comment_id_fields( $post_id ); ?>
 						</p>
 						<?php do_action( 'comment_form', $post_id ); ?>
-                                            </div>
+                                            </div> 
 					</form>
 				<?php endif; ?>
 			</div><!-- #respond -->
