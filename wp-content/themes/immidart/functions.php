@@ -24,6 +24,8 @@ if (!isset($content_width))
 }
 
 if (function_exists('add_theme_support'))
+    global $count; 
+$GLOBALS['count'] = 1;
 {
     // Add Menu Support
     add_theme_support('menus');
@@ -307,9 +309,18 @@ function enable_threaded_comments()
     }
 }
 
+remove_filter ('the_content', 'wpautop'); 
+remove_filter ('comment_text', 'wpautop'); 
+remove_filter('the_content', 'wptexturize');
+remove_filter('the_excerpt', 'wptexturize');
+remove_filter('comment_text', 'wptexturize');
+
 // Custom Comments Callback
 function html5blankcomments($comment, $args, $depth)
 {
+    echo $GLOBALS['count'];
+    
+  
 	$GLOBALS['comment'] = $comment;
 	extract($args, EXTR_SKIP);
 
@@ -320,35 +331,46 @@ function html5blankcomments($comment, $args, $depth)
 		$tag = 'li';
 		$add_below = 'div-comment';
 	}
+        
+     //+    if($GLOBALS['count'] == 1 ) {
 ?>
     <!-- heads up: starting < for the html tag (li or div) in the next line: -->
     <<?php echo $tag ?> <?php comment_class(empty( $args['has_children'] ) ? '' : 'parent') ?> id="comment-<?php comment_ID() ?>">
-	<?php if ( 'div' != $args['style'] ) : ?>
-	<div id="div-comment-<?php comment_ID() ?>" class="comment-body">
-	<?php endif; ?>
-	<div class="comment-author vcard">
-	<?php if ($args['avatar_size'] != 0) echo get_avatar( $comment, $args['180'] ); ?>
-	<?php printf(__('<cite class="fn">%s</cite> <span class="says">says:</span>'), get_comment_author_link()) ?>
-	</div>
-<?php if ($comment->comment_approved == '0') : ?>
-	<em class="comment-awaiting-moderation"><?php _e('Your comment is awaiting moderation.') ?></em>
-	<br />
-<?php endif; ?>
+	
+    <?php //} ?> 
+    
 
-	<div class="comment-meta commentmetadata"><a href="<?php echo htmlspecialchars( get_comment_link( $comment->comment_ID ) ) ?>">
-		<?php
-			printf( __('%1$s at %2$s'), get_comment_date(),  get_comment_time()) ?></a><?php edit_comment_link(__('(Edit)'),'  ','' );
-		?>
-	</div>
+       <?php if ( 'div' != $args['style'] ) : ?>
+	  <div id="div-comment-<?php comment_ID() ?>" class="comment-body">
+       <?php endif; ?>
+            
+            <div class="comment-box clearfix" data-aos="fade-up" data-aos-duration="1000">
+                <div class="avatar">
+                    <?php if ($args['avatar_size'] != 0) echo get_avatar( $comment, $args['180'] ); ?>
+                </div>
+                
+                <div class="comment-content">
+                        <div class="comment-meta"> 
+                            <span class="comment-by"><?php echo get_comment_author_link() ?></span> 
+                            <span class="comment-date"><?php echo get_comment_date(). 'at'. get_comment_time(); ?></span> 
+                            <span class="reply-link"><?php comment_reply_link(array_merge( $args, array('add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth']))) ?></span> 
+                        </div>
+                        <p><?php comment_text() ?></p>
 
-	<?php comment_text() ?>
 
-	<div class="reply">
-	<?php comment_reply_link(array_merge( $args, array('add_below' => $add_below, 'depth' => $depth, 'max_depth' => $args['max_depth']))) ?>
-	</div>
-	<?php if ( 'div' != $args['style'] ) : ?>
-	</div>
-	<?php endif; ?>
+
+            <?php if ($comment->comment_approved == '0') : ?>
+                    <em class="comment-awaiting-moderation"><?php _e('Your comment is awaiting moderation.') ?></em>
+                    <br />
+            <?php endif; ?>
+
+                </div>   
+                <?php  $GLOBALS['count']++;  ?>
+            </div> 
+             
+                <?php if ( 'div' != $args['style'] ) : ?>
+	   </div>
+	         <?php endif; ?>
 <?php }
 
 /*------------------------------------*\
@@ -565,4 +587,51 @@ function wpb_get_post_views($postID){
 }
 add_filter('view_count', 'wpb_get_post_views');
 
+function crunchify_social_sharing_buttons($content) {
+    global $post;
+    if(is_singular()){
+
+        // Get current page URL 
+        $crunchifyURL = urlencode(get_permalink());
+ 
+        // Get current page title
+        $crunchifyTitle = str_replace( ' ', '%20', get_the_title());
+        
+        // Get Post Thumbnail for pinterest
+        $crunchifyThumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
+ 
+        // Construct sharing URL without using any script
+        $twitterURL = 'https://twitter.com/intent/tweet?text='.$crunchifyTitle.'&amp;url='.$crunchifyURL.'&amp;via=Crunchify';
+        $facebookURL = 'https://www.facebook.com/sharer/sharer.php?u='.$crunchifyURL;
+        $googleURL = 'https://plus.google.com/share?url='.$crunchifyURL;
+        $bufferURL = 'https://bufferapp.com/add?url='.$crunchifyURL.'&amp;text='.$crunchifyTitle;
+        $whatsappURL = 'whatsapp://send?text='.$crunchifyTitle . ' ' . $crunchifyURL;
+        $linkedInURL = 'https://www.linkedin.com/shareArticle?mini=true&url='.$crunchifyURL.'&amp;title='.$crunchifyTitle;
+ 
+        // Based on popular demand added Pinterest too
+        $pinterestURL = 'https://pinterest.com/pin/create/button/?url='.$crunchifyURL.'&amp;media='.$crunchifyThumbnail[0].'&amp;description='.$crunchifyTitle;
+     
+        // Add sharing button at the end of page/page content
+        $content .= '<!-- Crunchify.com social sharing. Get your copy here: http://crunchify.me/1VIxAsz -->';
+        $content .= '<div class="post-bottom clearfix" data-aos="fade-up" data-aos-duration="1000">';
+        $content .= '<div class="post-share">';
+        $content .= '<span>Share This Post:</span>';
+      //  $content .= '<ul class="social-icons icon-circle icon-zoom list-unstyled list-inline">';
+        $content .= '<a class="facebook" rel="nofollow" href="'.$facebookURL.'" title="Share to Facebook" onclick="return socialclick(this.href);"><i class="fa fa-facebook"></i></a> </li>';
+        $content .= '<a class="linkedin" rel="nofollow" href="'.$linkedInURL.'" title="Share to LinkedIn" onclick="return socialclick(this.href);"><i class="fa fa-linkedin"></i></a> </li>';
+        $content .= '<a class="twitter" rel="nofollow" href="'.$twitterURL.'"  title="Share to Twitter" onclick="return socialclick(this.href);"><i class="fa fa-twitter"></i></a> </li>';
+        $content .= '<a class="gplus" rel="nofollow" href="'.$googleURL.'" title="Share to Google Plus" onclick="return socialclick(this.href);"><i class="fa fa-google-plus"></i></a> </li>';
+        $content .= '<a class="mail" rel="nofollow" href="'.$pinterestURL.'" title="Share to Pinterest" onclick="return socialclick(this.href);"><i class="fa fa-pinterest"></i></a> </li>';
+        //$content .= '</ul>';
+        $content .= '</div>';
+        $content .= '</div>';
+      //  $content .= '</div>';
+        
+        return $content;
+    }else{
+        // if not a post/page then don't include sharing button
+        return $content;
+    }
+};
+add_filter( 'the_content', 'crunchify_social_sharing_buttons');
 ?>
