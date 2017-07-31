@@ -1802,3 +1802,24 @@ a.main-button:hover, input[type="submit"]:hover {
     	padding-top: 72px;
 	}
 }
+
+/*Comments */
+#wpcomm .wc-comment-title {
+    border-bottom:none;
+}
+
+#wpcomm .wc-comment-link .wpf-cta {
+    display: none !important;
+}
+
+#wpcomm .wc-comment-bar {
+    display: none !important;
+}
+
+#wc-comment-header {
+    font-size: 20px;
+    color: #323f43;
+    margin: 0px 0px 15px 0px;
+    font-family: 'OpenSansBold';
+    text-transform: uppercase;
+}

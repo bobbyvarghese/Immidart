@@ -7,11 +7,16 @@
 
 <?php if (have_comments()) : ?>
 
-	<h2><?php comments_number(); ?></h2>
-
-	<ul>
-		<?php wp_list_comments('type=comment&callback=html5blankcomments'); // Custom callback in functions.php ?>
-	</ul>
+	<h2><?php //comments_number(); 
+        ?></h2>
+         
+        <div id="comments">
+            <h2 class="comments-title" data-aos="fade-up" data-aos-duration="1000"><?php echo '('. get_comments_number().') COMMENTS'; ?></h2>
+            <ol class="comments-list"> 
+		    <?php  wp_list_comments('type=comment&callback=html5blankcomments'); // Custom callback in functions.php ?>
+	       
+                </ol>
+        </div>
 
 <?php elseif ( ! comments_open() && ! is_page() && post_type_supports( get_post_type(), 'comments' ) ) : ?>
 
@@ -22,3 +27,5 @@
 <?php comment_form(); ?>
 
 </div>
+
+
