@@ -39,8 +39,8 @@
               <div class="blog-content blog-content-details" data-aos="fade-up" data-aos-duration="1000">
                     <h4><a href="<?php echo the_permalink(); ?>"><?php the_title(); ?></a></h4>
                     <ul>
-                      <li><i class="fa fa-user" aria-hidden="true"></i> <a href="#"><?php echo get_the_author(); ?></a></li>
-                      <li><i class="fa fa-calendar" aria-hidden="true"></i> <a href="#"><?php the_time('F j, Y'); ?></a></li>
+                      <li><i class="fa fa-user" aria-hidden="true"></i> <span><?php echo get_the_author(); ?></span></li>
+                      <li><i class="fa fa-calendar" aria-hidden="true"></i> <span><?php the_time('F j, Y'); ?><span></li>
                     </ul>
                     <?php the_content(); ?>
               </div>
