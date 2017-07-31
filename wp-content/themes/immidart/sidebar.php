@@ -23,7 +23,7 @@
                       $category = get_category($child->term_id);
                       $count = $category->category_count;
                   ?>
-                <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i> <?php echo $child->name;?> <span><?php if($count < 10) {echo 0;} echo $count;?></span></a></li>
+                <li><a href="<?php echo get_category_link($child->term_id);?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i> <?php echo $child->name;?> <span><?php if($count < 10) {echo 0;} echo $count;?></span></a></li>
                   <?php } ?>
               </ul>
             </div>

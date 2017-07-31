@@ -5,7 +5,7 @@
        $current_cat_id  = $id_obj->term_id;
        $meta_image = z_taxonomy_image_url($id_obj->term_id);
 ?>
-
+<?php if(!empty($meta_image)): ?>
 <div class="inside-page-banner" id="blog" style="background: url(<?php echo $meta_image; ?>);">
       <div class="container">
         <div class="col-md-6 text-center col-md-offset-3">
@@ -18,6 +18,7 @@
         </div>
       </div>
 </div>
+<?php endif ?>
 
 <div id="page-body">
     <div class="container">
@@ -36,9 +37,9 @@
               </div>
                   <?php endif; ?>
               <div class="blog-content blog-content-details" data-aos="fade-up" data-aos-duration="1000">
-                    <h4><a href="the_permalink();"><?php the_title(); ?></a></h4>
+                    <h4><a href="<?php echo the_permalink(); ?>"><?php the_title(); ?></a></h4>
                     <ul>
-                      <li><i class="fa fa-user" aria-hidden="true"></i> <a href="#">Robot Smith</a></li>
+                      <li><i class="fa fa-user" aria-hidden="true"></i> <a href="#"><?php echo get_the_author(); ?></a></li>
                       <li><i class="fa fa-calendar" aria-hidden="true"></i> <a href="#"><?php the_time('F j, Y'); ?></a></li>
                     </ul>
                     <?php the_content(); ?>
