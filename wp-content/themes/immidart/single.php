@@ -4,17 +4,25 @@
        $id_obj = get_category_by_slug($category_slug);
        $current_cat_id  = $id_obj->term_id;
        $meta_image = z_taxonomy_image_url($id_obj->term_id);
+       $categoryLink = get_category_link($current_cat_id);
+       $single_page_category = get_the_category();
 ?>
 <?php if(!empty($meta_image)): ?>
 <div class="inside-page-banner" id="blog" style="background: url(<?php echo $meta_image; ?>);">
       <div class="container">
         <div class="col-md-6 text-center col-md-offset-3">
-          <h1><?php echo $id_obj->description; ?></h1>
+            <h1><?php echo get_the_title(); ?></h1>
         </div>
       </div>
       <div class="breadcrumb-bg">
         <div class="container">
-          <div class="breadcrumb"> <a class="" href="<?php echo get_site_url(); ?>">Home</a> <i class="fa fa-angle-double-right duble-arrow" aria-hidden="true"></i> <a class="active" href="<?php echo get_site_url() .'/blog'; ?>"> <?php echo $id_obj->name; ?></a> </div>
+          <div class="breadcrumb" style="width: inherit;"> 
+              <a class="" href="<?php echo get_site_url(); ?>">Home</a> 
+              <i class="fa fa-angle-double-right duble-arrow" aria-hidden="true"></i> 
+              <a class="" href="<?php echo get_site_url() .'/blog'; ?>"> <?php echo $id_obj->name; ?></a> 
+              <i class="fa fa-angle-double-right duble-arrow" aria-hidden="true"></i> 
+              <a class="active" href="<?php echo $categoryLink; ?>"> <?php echo $single_page_category[0]->name; ?></a> 
+          </div>
         </div>
       </div>
 </div>
