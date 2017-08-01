@@ -9,12 +9,8 @@
 
 <div class="col-md-4 col-sm-12 col-xs-12">
     <div class="sidebar">
-        <h3 class="sidebar-title">Subscribe Newsletter</h3>
             <div class="widget widget-search">
-              <form action="#">
-                <input type="search" placeholder="Enter Your Email">
-                <button class="search-btn" type="submit">Subscribe</button>
-              </form>
+                <?php if ( !function_exists( 'dynamic_sidebar' ) || !dynamic_sidebar('newletter-area') ) ?>
             </div>
             <div class="sidebar-item" >
               <h3 class="sidebar-title">Blog Categories</h3>

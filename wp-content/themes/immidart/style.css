@@ -1865,3 +1865,33 @@ h3.comment-reply-title {
     cursor: pointer;
     text-transform: initial;
 }
+
+.widget_wysija_cont .wysija-submit {
+    display: inline;
+}
+
+.sidebar form.widget_wysija input {
+    width: auto;
+    height: 37px;
+    margin: 0px;
+    float: left;
+    padding: 0px 16px 0px 16px;
+}
+
+
+.sidebar form.widget_wysija .wysija-input {
+    width: 70%;
+}
+
+.sidebar form.widget_wysija .wysija-submit-field {
+    color: #fff;
+    margin-left: -2px;
+}
+
+.sidebar .widget .widget_wysija h3 {
+    font-size: 20px;
+    color: #323f43;
+    margin: 0px 0px 15px 0px;
+    font-family: 'OpenSansBold';
+    text-transform: uppercase;
+}
