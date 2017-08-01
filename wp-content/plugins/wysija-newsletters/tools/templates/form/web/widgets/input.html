@@ -1,4 +1,4 @@
-<p class="wysija-paragraph">
+<!--<p class="wysija-paragraph">-->
     {if ! #params.label_within}<label>{#params.label}{if #params.required} <span class="wysija-required">*</span>{/if}</label>{/if}
     {if !#params.lines || #params.lines == 1}
     	<input type="text" name="{#field_prefix}[{#field}]" class="wysija-input {$validation}" title="{#params.label|html_value}" {if #params.label_within}placeholder="{#params.label|html_value}"{/if} value="{if #value}{#value|html_value}{/if}" />
@@ -11,4 +11,4 @@
         <input type="text" name="{#field_prefix}[abs][{#field}]" class="wysija-input validated[abs][{#field}]" value="" />
     </span>
     {/if}
-</p>
+<!--</p>-->
