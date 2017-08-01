@@ -26,8 +26,18 @@ class wp_bootstrap_navwalker extends Walker_Nav_Menu {
 	 * @param int $current_page Menu item ID.
 	 * @param object $args
 	 */
-	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
-		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
+	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {?>
+        <?php if($depth == 2) { ?>
+                  <script>
+                     (function ($) {
+                        $(document).ready(function () {
+                            $( "li.menu-item" ).parent('li ul ul').css( "top", "0px" );
+                            $( "li.menu-item" ).parent('li ul ul').css( "left", "186px" );
+                          })       
+                      })(jQuery);
+                  </script>
+        <?php } ?>
+	<?php	$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
 		/**
 		 * Dividers, Headers or Disabled
 		 * =============================

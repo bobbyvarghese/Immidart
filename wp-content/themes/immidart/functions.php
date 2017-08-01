@@ -118,22 +118,19 @@ function html5blank_conditional_scripts()
 // Load HTML5 Blank styles
 function html5blank_styles()
 {
-	wp_register_style( 'bootstrap-css', get_template_directory_uri() . '/css/bootstrap.css', array(), '3.0.1', 'all' );
+    wp_register_style( 'bootstrap-css', get_template_directory_uri() . '/css/bootstrap.css', array(), '3.0.1', 'all' );
     wp_enqueue_style( 'bootstrap-css' );
 	
-	wp_register_style( 'font-awesome', get_template_directory_uri() . '/css/font-awesome.min.css', array(), '3.0.1', 'all' );
+    wp_register_style( 'font-awesome', get_template_directory_uri() . '/css/font-awesome.min.css', array(), '3.0.1', 'all' );
     wp_enqueue_style( 'font-awesome' );
 	
-	wp_register_style( 'animate-css', get_template_directory_uri() . '/css/animate.css', array(), '1.0', 'all' );
+    wp_register_style( 'animate-css', get_template_directory_uri() . '/css/animate.css', array(), '1.0', 'all' );
     wp_enqueue_style( 'animate-css' );
-	
-    wp_register_style('normalize', get_template_directory_uri() . '/normalize.css', array(), '1.0', 'all');
-    wp_enqueue_style('normalize'); // Enqueue it!
 
     wp_register_style('html5blank', get_template_directory_uri() . '/style.css', array(), '1.0', 'all');
-    wp_enqueue_style('html5blank'); // Enqueue it!
-	
-	wp_register_style('aos', get_template_directory_uri() . '/css/aos.css', array(), '1.0', 'all');
+    wp_enqueue_style('html5blank'); 
+    
+    wp_register_style('aos', get_template_directory_uri() . '/css/aos.css', array(), '1.0', 'all');
     wp_enqueue_style('aos');  
 
 }
@@ -201,13 +198,11 @@ if (function_exists('register_sidebar'))
 
     // Define Sidebar Widget Area 2
     register_sidebar(array(
-        'name' => __('Widget Area 2', 'html5blank'),
-        'description' => __('Description for this widget-area...', 'html5blank'),
-        'id' => 'widget-area-2',
-        'before_widget' => '<div id="%1$s" class="%2$s">',
-        'after_widget' => '</div>',
-        'before_title' => '<h3>',
-        'after_title' => '</h3>'
+        'name' => __('ContactUsMenu', 'html5blank'),
+        'description' => __('Contact Us Menu Link', 'html5blank'),
+        'id' => 'contact-us',
+        'before_widget' => '',
+        'after_widget' => '',
     ));
 }
 

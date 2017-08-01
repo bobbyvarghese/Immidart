@@ -39,7 +39,12 @@
 			  <img src="<?php header_image(); ?>" height="<?php echo get_custom_header()->height; ?>" width="<?php echo get_custom_header()->width; ?>" alt="" />
 			</a></div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="defaultNavbar1"> <a class="header-request-demo" href="#">Contact Us</a>
+        <div class="collapse navbar-collapse" id="defaultNavbar1"> 
+<!--            <a class="header-request-demo" href="#">Contact Us</a>-->
+               <?php 
+                        if(is_active_sidebar('contact-us')) {
+                       dynamic_sidebar('contact-us');
+                    }    ?>
 				<?php html5blank_nav(); ?>
         </div>
         <!-- /.navbar-collapse --> 
