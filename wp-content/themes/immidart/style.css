@@ -72,11 +72,12 @@ body {
 .navbar-default .navbar-nav>li>a {
 	color: #323f43;
 	font-family: 'opensansregular';
-	font-size: 14px;
+	font-size: 13px;
 	font-weight: normal;
 	-webkit-transition: all 0.3s;
 	-moz-transition: all 0.3s;
 	transition: all 0.3s;
+	text-transform: uppercase;
 }
 .navbar-default .navbar-nav>li>a:hover {
 	color: #85c342;
@@ -2034,8 +2035,8 @@ a.main-button:hover, input[type="submit"]:hover {
     font-size: 20px;
     color: #323f43;
     margin:0px 0px 15px 0px;
-	font-family: 'OpenSansBold';
-	text-transform: uppercase;
+    font-family: 'OpenSansBold';
+    text-transform: uppercase;
 }
 .sidebar form{
     overflow: hidden;
