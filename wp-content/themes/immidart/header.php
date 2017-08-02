@@ -40,14 +40,15 @@
 			</a></div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="defaultNavbar1"> 
+<!--            <a class="header-request-demo" href="#">Contact Us</a>-->
                <?php 
                         if(is_active_sidebar('contact-us')) {
                             dynamic_sidebar('contact-us'); ?>
                             <script>  
                                 (function ($) {
                                     $(document).ready(function () {
-                                        $("body").find("div.textwidget p") .replaceWith(function() { return this.childNodes });
-                                        $("body").find("div.textwidget") .replaceWith(function() { return this.childNodes });
+                                       $("body").find("a.header-request-demo").parent("div.textwidget p").replaceWith(function() { return this.childNodes });
+                                        $("body").find("a.header-request-demo").parent("div.textwidget").replaceWith(function() { return this.childNodes });
                                     });       
                                 })(jQuery);
                             </script>

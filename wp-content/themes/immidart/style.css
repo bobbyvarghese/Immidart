@@ -134,14 +134,16 @@ body {
 	display: block;
 	padding: 12px 20px;
 	clear: both;
-	font-weight: 400;
+	font-weight: normal;
 	line-height: 1.42857143;
 	color: #fff;
+        font-size: 13px;
 	white-space: nowrap;
 	border-bottom: 1px solid #7bb63b;
 	-webkit-transition: all 0.3s;
 	-moz-transition: all 0.3s;
 	transition: all 0.3s;
+        text-transform: uppercase;
 }
 .dropdown-menu>li>a:hover {
 	background-color: #fff;
