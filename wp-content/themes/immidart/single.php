@@ -8,7 +8,7 @@
        $single_page_category = get_the_category();
 ?>
 <?php if(!empty($meta_image)): ?>
-<div class="inside-page-banner" id="blog" style="background: url(<?php echo $meta_image; ?>);">
+<div class="inside-page-banner" id="blog" style="background: url(<?php echo $meta_image; ?>); background-size: cover; background-position: center;">
       <div class="container">
         <div class="col-md-6 text-center col-md-offset-3">
             <h1><?php echo get_the_title(); ?></h1>
@@ -34,32 +34,33 @@
         <div class="col-md-8 col-sm-12 col-xs-12">
           <div class="blog-items">
             <div class="blog-item blog-item-wide">
-              <div class="blog-image blog-details-img" data-aos="fade-up" data-aos-duration="1000"> 
                    <?php if (have_posts()): while (have_posts()) : the_post(); 
                          /*To get the page view count. To get popular post*/
                                wpb_get_post_views(get_the_ID()); 
                    ?>
-                  <?php if ( has_post_thumbnail()) : // Check if Thumbnail exists ?>	
-                      <a href="<?php echo the_permalink(); ?>">
-                      <img src="<?php echo the_post_thumbnail_url(); ?>" alt="blog image" class="img-responsive"></a> 
-              </div>
+                  <?php if ( has_post_thumbnail()) : // Check if Thumbnail exists ?>
+                            <div class="blog-image blog-details-img" data-aos="fade-up" data-aos-duration="1000"> 
+                                <a href="<?php echo the_permalink(); ?>">
+                                <img src="<?php echo the_post_thumbnail_url(); ?>" alt="blog image" class="img-responsive"></a> 
+                            </div>
+                            <div class="blog-content blog-content-details" data-aos="fade-up" data-aos-duration="1000">
+                  <?php else : ?>
+                                <div class="blog-content blog-content-details" data-aos="fade-up" data-aos-duration="1000" style="margin-top:-15px;" >       
                   <?php endif; ?>
-              <div class="blog-content blog-content-details" data-aos="fade-up" data-aos-duration="1000">
-                    <h4><a href="<?php echo the_permalink(); ?>"><?php the_title(); ?></a></h4>
-                    <ul>
-                      <li><i class="fa fa-user" aria-hidden="true"></i> <span><?php echo get_the_author(); ?></span></li>
-                      <li><i class="fa fa-calendar" aria-hidden="true"></i> <span><?php the_time('F j, Y'); ?><span></li>
-                    </ul>
-                    <?php the_content(); ?>
-              </div>
-			<?php comments_template(); 
-                        ?>	
-	        <?php endwhile; 
-                      else: ?>
+                        <h4><a href="<?php echo the_permalink(); ?>"><?php the_title(); ?></a></h4>
+                        <ul>
+                          <li><i class="fa fa-user" aria-hidden="true"></i> <span><?php echo get_the_author(); ?></span></li>
+                          <li><i class="fa fa-calendar" aria-hidden="true"></i> <span><?php the_time('F j, Y'); ?><span></li>
+                        </ul>
+                        <?php the_content(); ?>
+                  </div>
+	          <?php comments_template(); ?>	
+	          <?php endwhile; 
+                        else: ?>
                         <article>
                             <h1><?php _e( 'Sorry, nothing to display.', 'html5blank' ); ?></h1>
                         </article>
-	      <?php endif; ?>
+	          <?php endif; ?>
             </div>
          </div>
         </div>
