@@ -31,14 +31,12 @@
       </div>
     </div>
   </div>
-
-		</div>
-		<!-- /wrapper -->
-
-		<?php //wp_footer(); ?>
+</div>
+<!-- /wrapper -->
+<a href="#" class="scrollToTop"></a> 
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-  <script type="text/javascript" src="<?php bloginfo("template_url"); ?>/js/jquery-1.11.3.min.js"></script> 
+<script type="text/javascript" src="<?php bloginfo("template_url"); ?>/js/jquery-1.11.3.min.js"></script> 
 <!-- Include all compiled plugins (below), or include individual files as needed --> 
 <script src="<?php bloginfo("template_url"); ?>/js/bootstrap.js"></script> 
 <script src="<?php bloginfo("template_url"); ?>/js/aos.js"></script> 
@@ -63,8 +61,8 @@
       }
 
 	
-	$(document).ready(function() {
-    $('.navbar a.dropdown-toggle').on('click', function(e) {
+      $(document).ready(function() {
+        $('.navbar a.dropdown-toggle').on('click', function(e) {
         var $el = $(this);
         var $parent = $(this).offsetParent(".dropdown-menu");
         $(this).parent("li").toggleClass('open');
@@ -78,6 +76,42 @@
         return false;
     });
 });
-	</script>
-	</body>
+	
+	$(document).ready(function(){
+	
+	//Check to see if the window is top if not then display button
+	$(window).scroll(function(){
+		if ($(this).scrollTop() > 100) {
+			$('.scrollToTop').fadeIn();
+		} else {
+			$('.scrollToTop').fadeOut();
+		}
+	});
+	
+	//Click event to scroll to top
+	$('.scrollToTop').click(function(){
+		$('html, body').animate({scrollTop : 0},800);
+		return false;
+	});
+	
+});
+</script> 
+<script>
+	function headerStyle() {
+		if($("#header").length){
+			var windowpos = $window.scrollTop();
+			if (windowpos >= 180) {
+				$("#header").addClass('fixed-header');
+			} else {
+				$("#header").removeClass('fixed-header');
+			}
+		}
+	}
+	var $window		= $(window);
+	$window.on('scroll', function() {
+		headerStyle();
+		//factCounter();
+	});
+</script>
+</body>
 </html>
