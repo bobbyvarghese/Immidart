@@ -3621,36 +3621,6 @@ h3.comment-reply-title {
     text-transform: initial;
 }
 
-.widget_wysija_cont .wysija-submit {
-    display: inline;
-}
-
-.sidebar form.widget_wysija input {
-    width: auto;
-    height: 37px;
-    margin: 0px;
-    float: left;
-    padding: 0px 16px 0px 16px;
-}
-
-
-.sidebar form.widget_wysija .wysija-input {
-    width: 70%;
-}
-
-.sidebar form.widget_wysija .wysija-submit-field {
-    color: #fff;
-    margin-left: -2px;
-}
-
-.sidebar .widget .widget_wysija h3 {
-    font-size: 20px;
-    color: #323f43;
-    margin: 0px 0px 15px 0px;
-    font-family: 'OpenSansBold';
-    text-transform: uppercase;
-}
-
 .dropdown-menu > .active > a {
         background-color: #85c342;
 }
@@ -3658,4 +3628,51 @@ h3.comment-reply-title {
 .dropdown-menu > .active > a:hover {
         background-color: #fff;
         color: #85c342;
+}
+
+.sidebar .widget_mailpoet_form h3 {
+    font-size: 20px;
+    color: #323f43;
+    margin: 0px 0px 15px 0px;
+    font-family: 'OpenSansBold';
+    text-transform: uppercase;    text-transform: uppercase;
+
+}
+
+.sidebar form.mailpoet_form_widget input {
+    width: auto;
+    height: 39px;
+    margin: -1px;
+    float: left;
+    padding: 0px 16px 0px 16px;
+    font-size: 13px;
+    font-family: 'opensansregular';
+    color: #fff;
+}
+
+.sidebar form.mailpoet_form_widget input[type="email"] {
+    position: relative;
+    margin: 0;
+    color: RED;
+    float: left;
+    height: 37px;
+    line-height: 37px;
+    width: calc(100% - 102px);
+    border-right: none;
+    border-radius: 2px 0 0 2px;
+    -webkit-border-radius: 2px 0 0 2px;
+    -moz-border-radius: 2px 0 0 2px;
+    -o-border-radius: 2px 0 0 2px;
+}
+
+.sidebar form.mailpoet_form_widget {
+    overflow: inherit;
+}
+
+#mailpoet_form_1 .mailpoet_validate_success {
+    padding-top: 48px;
+}
+
+#mailpoet_form_1 .mailpoet_validate_error {
+    padding-top: 48px;
 }
