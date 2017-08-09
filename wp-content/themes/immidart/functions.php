@@ -571,8 +571,8 @@ add_filter('view_count', 'wpb_get_post_views');
 
 function crunchify_social_sharing_buttons($content) {
     global $post;
-    if(is_singular()){
-
+    $page = get_post();
+    if(is_singular() && !($page->post_type == 'mailpoet_page')){
         // Get current page URL 
         $crunchifyURL = urlencode(get_permalink());
  
@@ -734,4 +734,19 @@ function bs_comment_form( $args = array(), $post_id = null ) {
 		<?php endif; ?>
 	<?php
 }
+
+function templateRedirect()
+{
+    if (is_single()) {
+        global $post;
+        // or check by post name or whatever
+        if ($post->post_name == 'subscriptions') {
+            include (TEMPLATEPATH . '/mailpoet-subscribed.php');
+            exit;
+        }
+    }
+}
+ 
+// add our function to template_redirect hook
+add_action('template_redirect', 'templateRedirect');
 ?>
