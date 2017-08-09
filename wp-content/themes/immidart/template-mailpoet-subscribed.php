@@ -5,7 +5,7 @@
 
 get_header(); 
 $banner_image_path = get_template_directory_uri().'/images/banner.jpg';
-$page = get_page_by_path('newletter-subscription');
+$page = get_page_by_path('newsletter-subscription');
 $content = apply_filters('the_content', $page->post_content);
 ?>
 <div class="inside-page-banner" id="error" style="background-image: url(<?php echo $banner_image_path; ?>);">
