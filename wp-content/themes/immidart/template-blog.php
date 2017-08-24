@@ -25,7 +25,14 @@
         <div class="col-md-8 col-sm-12 col-xs-12">
           <div class="blog-items">
             <?php 
-                   $args = array('cat' => $current_cat_id, 'orderby' => 'post_date', 'order' => 'DESC', 'post_status' => 'publish');
+                   $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+                   $args = array('cat' => $current_cat_id, 
+                                 'orderby' => 'post_date', 
+                                 'posts_per_page'=> 5,
+                                 'order' => 'DESC', 
+                                 'post_status' => 'publish',
+                                 'paged' => $paged,
+                                );
                    query_posts($args);
                    if (have_posts()): while (have_posts()) : the_post();  
             ?>
@@ -42,7 +49,8 @@
                         </div>
                         <hr data-aos="fade-up" data-aos-duration="1000">
             <?php   
-                    endwhile; 
+                    endwhile;
+                    get_template_part('pagination'); 
                     endif;
             ?>
             <!-- blog item -->

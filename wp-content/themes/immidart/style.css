@@ -3676,3 +3676,15 @@ h3.comment-reply-title {
 #mailpoet_form_1 .mailpoet_validate_error {
     padding-top: 48px;
 }
+
+.pagination .page-numbers{
+    color: #000;
+}
+
+.pagination .current{   
+    color: #85c342;
+}
+
+.pagination .page-numbers{
+    text-decoration: none;
+}
