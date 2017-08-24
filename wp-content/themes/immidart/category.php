@@ -54,6 +54,7 @@ $meta_image = z_taxonomy_image_url($catId);
                         <hr data-aos="fade-up" data-aos-duration="1000">
             <?php   
                     endwhile; 
+                    get_template_part('pagination');
                     endif;
             ?>
             <!-- blog item -->
